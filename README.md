@@ -1,44 +1,58 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## CRA集成组件库
 
-## Available Scripts
+1. 安装模块。
 
-In the project directory, you can run:
+```
+yarn add dumi cross-env -D
+```
 
-### `yarn start`
+2. 增加启动命令，修改 package.json。
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
+"scripts": {
+    "dumi": "cross-env APP_ROOT=components dumi dev",
+    "dumi-build": "cross-env APP_ROOT=components dumi build"
+  },
+```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+3. 增加配置，新建 config/config.js，只是在我们定义`APP_ROOT`目录下新建。
 
-### `yarn test`
+主要是 `cross-env APP_ROOT=components` 把 dumi 的默认目录和项目的 src 隔离开来，就是设置`components`为根目录。
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+具体的配置看[`umi`](https://umijs.org/config#extrababelplugins)和[dumi](https://d.umijs.org/zh-CN/config)
 
-### `yarn build`
+`config.js`为配置文件，如以下配置：
+```js
+import path from 'path';
+export default {
+    chainWebpack(memo) {
+        memo.plugins.delete('copy');
+    },
+    title: '组件库',
+    mode: 'site',
+    hash: true,
+    alias: {
+        "@components": path.resolve(process.cwd(), "./src/components")
+    },
+    sass: {
+        prependData:`@import "@components/var.scss";`
+    },
+    extraBabelPlugins:[
+        ["import", { libraryName: "antd-mobile", style: "css" }]
+    ]
+}
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+4. 新建文档目录 `components/`，这里的 `components` 目录即第二步中配置的环境变量，你可以随意同步修改。
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+例子看项目的这个目录下的文档怎么写。
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+5. 将 `components` 的临时文件添加到 .gitignore 中，如`.umi`。
 
-### `yarn eject`
+6. 移动端文档展示需要安装`dumi@1.1.0-beta.18+`以上的版本并安装`dumi-theme-mobile`即可。
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```shell
+yarn add dumi@1.1.0-beta.18 dumi-theme-mobile -D
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+7. 可以利用dumi约定式模式自动生成路由
