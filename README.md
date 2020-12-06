@@ -39,7 +39,13 @@ export default {
     },
     extraBabelPlugins:[
         ["import", { libraryName: "antd-mobile", style: "css" }]
-    ]
+    ],
+    themeConfig: {
+        hd: {
+            rules: [] // 禁用高清方案
+            // 更多 rule 配置访问 https://github.com/umijs/dumi/blob/master/packages/theme-mobile/src/typings/config.d.ts#L7
+        }
+    }
 }
 ```
 
@@ -49,10 +55,25 @@ export default {
 
 5. 将 `components` 的临时文件添加到 .gitignore 中，如`.umi`。
 
-6. 移动端文档展示需要安装`dumi@1.1.0-beta.18+`以上的版本并安装`dumi-theme-mobile`即可。
+6. 移动端文档展示需要安装最新的`dumi`版本如`dumi@1.1.0-rc.3`，并安装`dumi-theme-mobile`即可。
+
+目前移动端都在测试阶段，最好安装最新的，否则会各种找不到的问题BUG，而移动端展示目前不支持多例子点击切换展示，只能滚动页面到对应的例子进行切换展示
 
 ```shell
-yarn add dumi@1.1.0-beta.18 dumi-theme-mobile -D
+yarn add dumi@1.1.0-rc.5 dumi-theme-mobile -D
 ```
 
-7. 可以利用dumi约定式模式自动生成路由
+7. 目前移动端会使用750的高清模式，如果组件不是按这样模式开发，展示会缩小一半，不符合要求，所以禁用高清方案
+
+```
+themeConfig: {
+        hd: {
+            rules: [] // 禁用高清方案
+            // 更多 rule 配置访问 https://github.com/umijs/dumi/blob/master/packages/theme-mobile/src/typings/config.d.ts#L7
+        }
+    }
+```
+
+9. 使用sass需要安装@umijs/plugin-sass，否则无法启动sass
+
+8. 可以利用dumi约定式模式自动生成路由
