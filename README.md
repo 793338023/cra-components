@@ -53,7 +53,7 @@ export default {
 
 例子看项目的这个目录下的文档怎么写。
 
-5. 将 `components` 的临时文件添加到 .gitignore 中，如`.umi`。
+5. 将 `components` 的临时文件添加到 .gitignore 中，如`.umi`与`node_modules`。
 
 6. 移动端文档展示需要安装最新的`dumi`版本如`dumi@1.1.0-rc.3`，并安装`dumi-theme-mobile`即可。
 
