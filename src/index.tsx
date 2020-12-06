@@ -3,10 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { Inspector } from 'react-dev-inspector';
+
+
+const InspectorWrapper = process.env.NODE_ENV === 'development'
+  ? Inspector
+  : React.Fragment;
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <InspectorWrapper>
+      <App />
+    </InspectorWrapper>
   </React.StrictMode>,
   document.getElementById('root')
 );
